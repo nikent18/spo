@@ -7,13 +7,17 @@ package obfuscator;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -75,5 +79,17 @@ public class Utils {
             writer.flush();
             writer.close();
         }
+    }
+    public void deleteLineBreaks (String input, String output) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream (input)));
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(output)));
+        String content = new Scanner(new File(input)).useDelimiter("\\Z").next();
+        System.out.println(content);
+        content = content.replaceAll("\n", "").replaceAll("\r", "");
+        File file = new File(output);
+			FileWriter fileWriter = new FileWriter(file);
+			fileWriter.write(content);
+			fileWriter.flush();
+			fileWriter.close();
     }
 }

@@ -37,7 +37,8 @@ public class Obfuscator {
         FindFunction ff = new FindFunction();
         GenerateFalseCode gfc = new GenerateFalseCode();
         Utils ut = new Utils();
-        ut.DeleteComments("E:\\programming\\Obfuscator\\tmp.java", "E:\\programming\\Obfuscator\\out.java");
+       // ut.DeleteComments("E:\\programming\\Obfuscator\\tmp.java", "E:\\programming\\Obfuscator\\out.java");
+       ut.deleteLineBreaks("E:\\programming\\Obfuscator\\out.java", "E:\\programming\\Obfuscator\\tmp.java");
      //   System.out.println(gfc.createWrongCode());
       /*
         WriteAllInOneFile writefile = new WriteAllInOneFile();
