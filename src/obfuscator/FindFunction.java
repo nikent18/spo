@@ -88,7 +88,7 @@ public class FindFunction {
                         }
                     } 
                         //line = line.replaceAll(entry.getKey().toString(), entry.getValue().toString());
-                    }
+                }
                 if (replace == null) {
                     replace = line;
                 }

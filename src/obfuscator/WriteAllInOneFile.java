@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static obfuscator.FindFunction.generateRandomString;
@@ -40,7 +41,7 @@ public class WriteAllInOneFile {
                     BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
                     BufferedReader br = new BufferedReader(new InputStreamReader(fis));
                     String line = null;
-
+                    int inFunc = 0;
                     while ((line = br.readLine()) != null) {
                         if (line.contains("class") && line.contains("{") 
                             && (line.contains("public") || line.contains("private")|| line.contains("protected"))
@@ -48,9 +49,20 @@ public class WriteAllInOneFile {
                                 line = line.substring(line.indexOf("class") );
                                 isWrite = true;
                         }
+                        if ((line.contains("public") || line.contains("private")|| line.contains("protected")) 
+                                && ((line.contains("void") || line.contains("int")|| line.contains("String")|| line.contains("Double")|| line.contains("Float")))) {
+                            inFunc = 1;
+                        }
                         if (isWrite) {
                             bw.write(line);
                             bw.newLine();
+                            Random rnd = new Random();
+                            if (inFunc ==1 && rnd.nextInt(10)==7) {
+                                GenerateFalseCode fc = new GenerateFalseCode();
+                                bw.write(fc.createIfStatement());
+                                bw.newLine();
+                                inFunc = 0;
+                            }
                         }
                     }
                     bw.close();

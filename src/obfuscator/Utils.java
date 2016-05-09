@@ -87,9 +87,9 @@ public class Utils {
         System.out.println(content);
         content = content.replaceAll("\n", "").replaceAll("\r", "");
         File file = new File(output);
-			FileWriter fileWriter = new FileWriter(file);
-			fileWriter.write(content);
-			fileWriter.flush();
-			fileWriter.close();
+	FileWriter fileWriter = new FileWriter(file);
+	fileWriter.write(content);
+	fileWriter.flush();
+	fileWriter.close();
     }
 }
