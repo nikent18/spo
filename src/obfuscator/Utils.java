@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 public class Utils {
 
     public void DeleteComments(String input, String output) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream (input)));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(input)));
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(output)));
         boolean inBlockComment = false;
         boolean inSlashSlashComment = false;
@@ -80,16 +80,38 @@ public class Utils {
             writer.close();
         }
     }
-    public void deleteLineBreaks (String input, String output) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream (input)));
+
+    public void deleteLineBreaks(String input, String output) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(input)));
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(output)));
         String content = new Scanner(new File(input)).useDelimiter("\\Z").next();
         System.out.println(content);
         content = content.replaceAll("\n", "").replaceAll("\r", "");
         File file = new File(output);
-	FileWriter fileWriter = new FileWriter(file);
-	fileWriter.write(content);
-	fileWriter.flush();
-	fileWriter.close();
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write(content);
+        fileWriter.flush();
+        fileWriter.close();
+    }
+
+    public void changeStandartBufferedReader(String input, String output) throws FileNotFoundException, IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(input)));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(output)));
+        String line;
+
+        while ((line = br.readLine()) != null) {
+            if (line.contains("import") && line.contains("BufferedReader")) {
+                line = line.replaceAll(line, "import java.io.Writer;");
+            } 
+            bw.write(line);
+            bw.newLine();
+        }
+        BufferedReader br2 = new BufferedReader(new InputStreamReader(new FileInputStream("E:\\programming\\Obfuscator\\resources\\BufferedWriter")));
+        while ((line = br2.readLine()) != null) {
+            bw.write(line);
+            bw.newLine();
+        }
+        bw.close();
+        br.close();
     }
 }
