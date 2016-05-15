@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.util.Map;
 import java.util.Scanner;
@@ -102,7 +103,7 @@ public class Utils {
         while ((line = br.readLine()) != null) {
             if (line.contains("import") && line.contains("BufferedReader")) {
                 line = line.replaceAll(line, "import java.io.Writer;");
-            } 
+            }
             bw.write(line);
             bw.newLine();
         }
@@ -113,5 +114,40 @@ public class Utils {
         }
         bw.close();
         br.close();
+    }
+
+    byte[] toByteArray(int value) {
+        return ByteBuffer.allocate(4).putInt(value).array();
+    }
+
+    int fromByteArray(byte[] bytes) {
+        return ByteBuffer.wrap(bytes).getInt();
+    }   
+    
+    void hideInteger (String input, String output, String variable) throws FileNotFoundException, IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(input)));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(output)));
+        String line;
+
+        while ((line = br.readLine()) != null) {
+            if (line.contains(variable)) {
+                if (line.contains("int")) {
+                    line = line.replaceAll("int", "byte[]");
+                }
+                if (line.contains("=")) {
+                    int ind1 = line.indexOf("=");
+                    int ind2 = line.indexOf(variable);
+                    if (ind1 < ind2) {
+                        line = line.replaceAll(variable, "ByteBuffer.wrap("+variable+").getInt()");
+                    } else {
+                        String substr = line.substring(line.indexOf("=")+1);
+                        line = line.replaceAll(substr, "ByteBuffer.allocate(4).putInt("+substr+").array();");
+                    }
+                }
+            }
+            bw.write(line);
+        }
+        br.close();
+        bw.close();
     }
 }
